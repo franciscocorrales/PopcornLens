@@ -71,13 +71,20 @@ function injectRating(element, movieData) {
         element.classList.add('popcorn-lens-relative');
     }
 
-    const badge = document.createElement('div');
+    const badge = document.createElement('a');
     badge.className = 'popcorn-lens-badge';
+    badge.target = '_blank';
+    badge.href = `${TMDB_API.WEBSITE_URL}/movie/${movieData.id}`;
+    
+    // Stop propagation to prevent clicking the movie card behind the badge
+    badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
     
     // Format: 🍿 7.5
     const rating = movieData.vote_average ? movieData.vote_average.toFixed(1) : 'NR';
     badge.innerHTML = `<span>🍿</span> ${rating}`;
-    badge.title = `${movieData.title} (${movieData.release_date?.split('-')[0] || 'Unknown'})\n${movieData.overview || ''}`;
+    badge.title = `${movieData.title} (${movieData.release_date?.split('-')[0] || 'Unknown'})\n${movieData.overview || ''}\n\nClick to view on TMDB`;
 
     // Append to card
     element.appendChild(badge);

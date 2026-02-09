@@ -5,6 +5,7 @@
 const TMDB_API = {
     // Default placeholder or empty. Should be set via settings.
     BASE_URL: 'https://api.themoviedb.org/3',
+    WEBSITE_URL: 'https://www.themoviedb.org',
 
     /**
      * Get Configuration from Storage
