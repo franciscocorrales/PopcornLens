@@ -13,8 +13,8 @@ PopcornLens is a Chrome Extension that automatically injects movie ratings and m
 
 Currently, PopcornLens supports the following sites:
 
-- **Cinecalidad** (`cinecalidad.rs`)
-- **Mega-Mkv** (`mega-mkv.com`)
+- [**Cinecalidad**](https://www.cinecalidad.rs) (`cinecalidad.rs`)
+- [**Mega-Mkv**](https://mega-mkv.com) (`mega-mkv.com`) (IN PROGRESS)
 
 *More sites can be added easily by creating new handlers.*
 
