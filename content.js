@@ -44,15 +44,43 @@ async function initPopcornLens() {
         const searchResult = await TMDB_API.search(movie.title, movie.year, lang);
         
         if (searchResult && searchResult.results && searchResult.results.length > 0) {
-                const match = searchResult.results[0];
-                console.log(`PopcornLens MATCH: "${movie.title}" -> "${match.title}" | Rating: ${match.vote_average}/10`);
-                
-                // TODO: Delegate UI injection to a separate module or handler method in the future
-                // injectRating(movie.element, match);
+            const match = searchResult.results[0];
+            console.log(`PopcornLens MATCH: "${movie.title}" -> "${match.title}" | Rating: ${match.vote_average}`);
+            
+            injectRating(movie.element, match);
         } else {
-                console.log(`PopcornLens MISS: "${movie.title}"`);
+            console.log(`PopcornLens MISS: "${movie.title}"`);
         }
     }
+}
+
+/**
+ * Injects the rating badge into the movie element
+ * @param {HTMLElement} element - The movie card element
+ * @param {Object} movieData - The TMDB movie data
+ */
+function injectRating(element, movieData) {
+    if (!element || !movieData) return;
+
+    // Avoid duplicates
+    if (element.querySelector('.popcorn-lens-badge')) return;
+
+    // Ensure parent has positioning context
+    const style = window.getComputedStyle(element);
+    if (style.position === 'static') {
+        element.classList.add('popcorn-lens-relative');
+    }
+
+    const badge = document.createElement('div');
+    badge.className = 'popcorn-lens-badge';
+    
+    // Format: 🍿 7.5
+    const rating = movieData.vote_average ? movieData.vote_average.toFixed(1) : 'NR';
+    badge.innerHTML = `<span>🍿</span> ${rating}`;
+    badge.title = `${movieData.title} (${movieData.release_date?.split('-')[0] || 'Unknown'})\n${movieData.overview || ''}`;
+
+    // Append to card
+    element.appendChild(badge);
 }
 
 // Ensure the DOM is fully loaded before running
