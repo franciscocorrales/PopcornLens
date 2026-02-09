@@ -28,6 +28,13 @@
     "default_popup": "popup.html",
     "default_title": "PopcornLens"
   },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "permissions": [
+    "storage"
+  ],
   "host_permissions": [
     "https://api.themoviedb.org/*"
   ],
