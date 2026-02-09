@@ -27,35 +27,22 @@ const MegaMkvHandler = {
             const anchor = card.querySelector('a');
             if (!anchor) return;
 
-            // "Anaconda (2025) HD 1080p y 720p Latino Castellano"
-            const titleRaw = anchor.title || ""; 
+            const rawText = anchor.title || ""; 
 
-            if (!titleRaw) return;
+            if (!rawText) return;
 
-            // Regex: Match title followed by (Year), ignoring the rest
-            const match = titleRaw.match(/^(.*?)\s*\((\d{4})\)/);
+            // Use the centralized parser
+            const { title, year } = MovieParser.parse(rawText);
             
-            if (match) {
+            if (title) {
                 movies.push({
                     element: card,
-                    title: match[1].trim(),
-                    year: match[2]
+                    title: title,
+                    year: year || ""
                 });
-            } else {
-                // Warning: The title string on this site seems very messy with resolutions etc.
-                // If regex doesn't match (YYYY), it might not be a movie or format differs.
-                // We'll skip for now to avoid bad search queries.
             }
         });
 
         return movies;
     },
-
-    /**
-     * specific language for this site
-     * @returns {string}
-     */
-    getLanguage: function() {
-        return 'es-ES';
-    }
 };

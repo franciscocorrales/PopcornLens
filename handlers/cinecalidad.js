@@ -24,46 +24,31 @@ const CinecalidadHandler = {
 
         cards.forEach(card => {
             const titleElement = card.querySelector('.in_title');
-            let titleRaw = "";
+            let rawText = "";
 
             // Strategy 1: Title div
             if (titleElement) {
-                 titleRaw = titleElement.textContent.trim();
+                 rawText = titleElement.textContent;
             } else {
                  // Strategy 2: Image attribute fallback
                  const img = card.querySelector('img');
-                 if (img) titleRaw = img.title || img.alt || "";
+                 if (img) rawText = img.title || img.alt || "";
             }
 
-            if (!titleRaw) return;
+            if (!rawText) return;
 
-            // Regex matches "Title (Year)" format commonly used on this site
-            const match = titleRaw.match(/^(.*)\s*\((\d{4})\)$/);
+            // Use the centralized parser
+            const { title, year } = MovieParser.parse(rawText);
             
-            if (match) {
+            if (title) {
                 movies.push({
                     element: card,
-                    title: match[1].trim(),
-                    year: match[2]
-                });
-            } else {
-                // Fallback if regex fails (use full text as title)
-                movies.push({
-                    element: card,
-                    title: titleRaw,
-                    year: ""
+                    title: title,
+                    year: year || ""
                 });
             }
         });
 
         return movies;
     },
-
-    /**
-     * specific language for this site
-     * @returns {string}
-     */
-    getLanguage: function() {
-        return 'es-ES';
-    }
 };
