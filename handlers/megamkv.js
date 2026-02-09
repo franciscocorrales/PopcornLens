@@ -4,6 +4,7 @@
  */
 const MegaMkvHandler = {
     name: 'MegaMkv',
+    MATCH_URL: 'mega-mkv.com',
     
     /**
      * Checks if this handler supports the current URL
@@ -11,7 +12,7 @@ const MegaMkvHandler = {
      * @returns {boolean}
      */
     canHandle: function(url) {
-        return url.includes('mega-mkv.com');
+        return url.includes(this.MATCH_URL);
     },
 
     /**

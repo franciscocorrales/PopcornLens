@@ -4,6 +4,7 @@
  */
 const CinecalidadHandler = {
     name: 'Cinecalidad',
+    MATCH_URL: 'cinecalidad.rs',
     
     /**
      * Checks if this handler supports the current URL
@@ -11,7 +12,7 @@ const CinecalidadHandler = {
      * @returns {boolean}
      */
     canHandle: function(url) {
-        return url.includes('cinecalidad.rs');
+        return url.includes(this.MATCH_URL);
     },
 
     /**
