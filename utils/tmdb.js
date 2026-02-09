@@ -20,12 +20,15 @@ const TMDB_API = {
     /**
      * Search for a movie on TMDB
      * @param {string} title - Movie title
-     * @param {string|number} year - Release year (optional)
-     * @param {string} detectedLang - Language detected from the page
+     * @param {string|number} [year] - Release year (optional)
+     * @param {string} [detectedLang] - Language detected from the page (optional)
      * @returns {Promise<Object|null>} Search results or null on error
      */
     search: async function(title, year, detectedLang) {
-        if (!title) return null;
+        // Validation: Title is strictly required and must not be empty
+        if (!title || typeof title !== 'string' || title.trim() === '') {
+            return null;
+        }
 
         const config = await this.getConfig();
         const apiKey = config.apiKey;
@@ -35,12 +38,21 @@ const TMDB_API = {
             return null;
         }
 
-        // Use user preference if set, otherwise use detected page language
+        // Logic: 
+        // 1. User setting overrides everything
+        // 2. Page detected language
+        // 3. Fallback to English
         const language = config.language || detectedLang || 'en-US';
         
         try {
-            const query = encodeURIComponent(title);
-            const queryYear = year ? `&primary_release_year=${year}` : '';
+            const query = encodeURIComponent(title.trim());
+            
+            // Year is optional. Validate it's a 4-digit text/number if present.
+            let queryYear = '';
+            if (year && String(year).trim().length === 4) {
+                 queryYear = `&primary_release_year=${year}`;
+            }
+
             const url = `${this.BASE_URL}/search/movie?api_key=${apiKey}&query=${query}${queryYear}&language=${language}`;
             
             const response = await fetch(url);

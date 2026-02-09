@@ -34,7 +34,8 @@ async function initPopcornLens() {
     console.log(`PopcornLens: Found ${movies.length} movies. Fetching metadata...`);
 
     // 2. Process each movie
-    const lang = handler.getLanguage ? handler.getLanguage() : 'en-US';
+    // If handler doesn't specify language, pass undefined so TMDB utils can decide default
+    const lang = handler.getLanguage ? handler.getLanguage() : undefined;
 
     for (const movie of movies) {
         if (!movie.title) continue;
