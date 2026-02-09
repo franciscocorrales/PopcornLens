@@ -1,0 +1,17 @@
+.popcorn-lens-container {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.popcorn-lens-rating {
+    border: 2px solid #eab308; /* Yellow/Gold */
+    background-color: #fefce8;
+    color: #422006;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.9em;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+}

@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "PopcornLens",
+  "version": "1.0.0",
+  "description": "Injects external movie ratings and information into movie websites.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.cinecalidad.rs/*"
+      ],
+      "js": [
+        "utils/tmdb.js",
+        "handlers/cinecalidad.js",
+        "content.js"
+      ],
+      "css": ["styles.css"]
+
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PopcornLens"
+  },
+  "host_permissions": [
+    "https://api.themoviedb.org/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
