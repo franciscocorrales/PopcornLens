@@ -5,7 +5,8 @@
  */
 
 const Handlers = [
-    CinecalidadHandler
+    CinecalidadHandler,
+    MegaMkvHandler
 ];
 
 /**
