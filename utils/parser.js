@@ -13,6 +13,7 @@ const MovieParser = {
         /\bWEB-?DL\b/gi,            // WEB-DL
         /\bWEB-?Rip\b/gi,           // WEBRip
         /\bHDRip\b/gi,              // HDRip
+        /\bHDR10\b/gi,              // HDR10
         /\bDVDRip\b/gi,             // DVDRip
         /\bH\.?26[45]\b/gi,         // H.264, H.265
         /\bx26[45]\b/gi,            // x264, x265
