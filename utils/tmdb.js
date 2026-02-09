@@ -38,21 +38,22 @@ const TMDB_API = {
             return null;
         }
 
-        // Logic: 
-        // 1. User setting overrides everything
-        // 2. Page detected language
-        // 3. Fallback to English
         const language = config.language || detectedLang || 'en-US';
         
-        try {
-            const query = encodeURIComponent(title.trim());
-            
-            // Year is optional. Validate it's a 4-digit text/number if present.
-            let queryYear = '';
-            if (year && String(year).trim().length === 4) {
-                 queryYear = `&primary_release_year=${year}`;
-            }
+        // Prepare keys for cache lookup
+        const cleanTitle = title.trim();
+        const cleanYear = (year && String(year).trim().length === 4) ? String(year).trim() : '';
+        
+        // --- Cache Check ---
+        const cachedResult = await Cache.get(cleanTitle, cleanYear, language);
+        if (cachedResult) {
+            console.log(`PopcornLens: Cache HIT for "${cleanTitle}"`);
+            return cachedResult;
+        }
 
+        try {
+            const query = encodeURIComponent(cleanTitle);
+            const queryYear = cleanYear ? `&primary_release_year=${cleanYear}` : '';
             const url = `${this.BASE_URL}/search/movie?api_key=${apiKey}&query=${query}${queryYear}&language=${language}`;
             
             const response = await fetch(url);
@@ -62,7 +63,15 @@ const TMDB_API = {
                 return null;
             }
             
-            return await response.json();
+            const data = await response.json();
+
+            // --- Cache Save ---
+            // Only cache if we actually found results (avoid caching bad queries/misses)
+            if (data && data.results && data.results.length > 0) {
+                Cache.set(cleanTitle, cleanYear, language, data);
+            }
+
+            return data;
         } catch (error) {
             console.error("PopcornLens: Network Error", error);
             return null;
