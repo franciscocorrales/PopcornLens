@@ -6,7 +6,8 @@
 
 const Handlers = [
     CinecalidadHandler,
-    MegaMkvHandler
+    MegaMkvHandler,
+    ImdbHandler
 ];
 
 /**
@@ -31,6 +32,17 @@ async function initPopcornLens() {
 
     console.log(`PopcornLens: Activated ${handler.name} Handler`);
     
+    // Optional: Handler specific initialization (e.g., dom modification)
+    if (typeof handler.init === 'function') {
+        handler.init();
+    }
+
+    // Check for exclusions
+    if (PopcornConfig.RATING_EXCLUSIONS.some(domain => currentUrl.includes(domain))) {
+        console.log("PopcornLens: Rating injection excluded for this site.");
+        return;
+    }
+
     // 1. Extract movies from page
     const movies = handler.getMovies();
     if (movies.length === 0) {

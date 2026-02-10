@@ -29,6 +29,12 @@ const PopcornConfig = {
         WEBSITE_URL: 'https://www.themoviedb.org',
     },
 
+    // Sites where rating injection should be skipped
+    RATING_EXCLUSIONS: [
+        'imdb.com',
+        'themoviedb.org'
+    ],
+
     // UI Constants
     UI: {
         BADGE_CLASS: 'popcorn-lens-badge',
