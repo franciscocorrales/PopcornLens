@@ -71,7 +71,7 @@ const TMDB_API = {
                 query: cleanTitle,
                 language: language,
                 page: 1,
-                include_adult: false
+                include_adult: true
             });
 
             if (cleanYear) {

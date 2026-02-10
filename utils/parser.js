@@ -38,25 +38,30 @@ const MovieParser = {
         let cleanText = rawText;
         let year = null;
 
-        // 1. Extract Year
-        // Supports: "Title (2024)", "Title [2024]", "Title 2024"
-        // We look for a 4-digit year between 1900 and 2099
-        const yearMatch = cleanText.match(/(?:^|\D)((?:19|20)\d{2})(?:\D|$)/);
-        if (yearMatch) {
-            year = yearMatch[1];
-            // Identify where the year is to potentially cut off everything after it
-            // (Often garbage comes after the year: "Title (2024) 1080p...")
-            const yearIndex = cleanText.indexOf(year);
-            if (yearIndex > -1) {
-                 // But wait, sometimes years are part of the title like "2001: A Space Odyssey"
-                 // If the year is very early in the string (char index < 5), it might be title.
-                 // Safer approach: Use the regex to find year, but keep standard cleaning.
+        // STRATEGY 1: Structured Year (YYYY) or [YYYY]
+        // If found, we assume everything after is metadata/garbage (e.g. "Title (2024) 1080p foo bar")
+        // We capture 19xx or 20xx only.
+        const explicitYearMatch = cleanText.match(/[\(\[]\s*((?:19|20)\d{2})\s*[\)\]]/);
+        
+        if (explicitYearMatch) {
+            year = explicitYearMatch[1];
+            // Cut text before the year
+            // Ensure we're not cutting an empty string if year is at start
+            if (explicitYearMatch.index > 0) {
+                cleanText = cleanText.substring(0, explicitYearMatch.index);
+            } else {
+                // Year is at start, just remove the match
+                cleanText = cleanText.replace(explicitYearMatch[0], ' ');
+            }
+        } else {
+            // STRATEGY 2: Loose Year (word boundary 2024)
+            // We don't cut text here to avoid breaking titles like "2001: A Space Odyssey"
+            // But we extract it for the query.
+            const yearMatch = cleanText.match(/(?:^|\D)((?:19|20)\d{2})(?:\D|$)/);
+            if (yearMatch) {
+                year = yearMatch[1];
             }
         }
-
-        // 2. Remove Year from string (optional, usually good to remove parenthesized year)
-        cleanText = cleanText.replace(/\(\s*\d{4}\s*\)/g, ' ');
-        cleanText = cleanText.replace(/\[\s*\d{4}\s*\]/g, ' ');
 
         // 3. Remove Noise
         this.NOISE_PATTERNS.forEach(pattern => {
@@ -67,10 +72,16 @@ const MovieParser = {
         cleanText = cleanText.replace(/[._\-]/g, ' '); // Replace separators with space
         cleanText = cleanText.replace(/\s+/g, ' ').trim(); // Collapse spaces
         
-        // 5. Special case: If we have "Title Year", and we extracted the year, maybe remove the trailing year number for the search query
+        // 5. Special case: If we have "Title Year" (loose year), and we extracted it
+        // Remove trailing year if it matches the extracted year
         if (year && cleanText.endsWith(year)) {
-            cleanText = cleanText.substring(0, cleanText.length - year.length).trim();
+            // Only remove if it's separate word
+            cleanText = cleanText.replace(new RegExp(`\\b${year}$`), '').trim();
         }
+        
+        // 6. Final Cleanups: Trailing "y" or "and" (common artifacts from "Title y Quality")
+        // Removes " y" at the end of the string
+        cleanText = cleanText.replace(/\s+y$/i, ''); 
 
         return {
             title: cleanText,
