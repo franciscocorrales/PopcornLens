@@ -3,17 +3,30 @@
  * Search and retrieve movie information
  */
 const TMDB_API = {
-    // Default placeholder or empty. Should be set via settings.
-    BASE_URL: 'https://api.themoviedb.org/3',
-    WEBSITE_URL: 'https://www.themoviedb.org',
+    // Use constants from config
+    BASE_URL: PopcornConfig.API.BASE_URL,
+    WEBSITE_URL: PopcornConfig.API.WEBSITE_URL,
 
     /**
      * Get Configuration from Storage
      */
     getConfig: function() {
         return new Promise((resolve) => {
-            chrome.storage.sync.get({ apiKey: '', language: '' }, (items) => {
-                resolve(items);
+            const keys = {
+                [PopcornConfig.STORAGE.API_KEY]: PopcornConfig.DEFAULTS.API_KEY,
+                [PopcornConfig.STORAGE.LANGUAGE]: PopcornConfig.DEFAULTS.LANGUAGE
+            };
+            
+            chrome.storage.sync.get(keys, (items) => {
+                // Return normalized keys if needed by converting back from storage keys to props, 
+                // but for now we consume the storage keys directly or map them here.
+                // Let's map them to a clean config object to keep the rest of the code clean
+                // IF strictly necessary, but actually we can just use the items as they are returned
+                // with the keys defined in PopcornConfig.STORAGE.
+                resolve({
+                    apiKey: items[PopcornConfig.STORAGE.API_KEY],
+                    language: items[PopcornConfig.STORAGE.LANGUAGE]
+                });
             });
         });
     },
@@ -53,9 +66,19 @@ const TMDB_API = {
         }
 
         try {
-            const query = encodeURIComponent(cleanTitle);
-            const queryYear = cleanYear ? `&primary_release_year=${cleanYear}` : '';
-            const url = `${this.BASE_URL}/search/movie?api_key=${apiKey}&query=${query}${queryYear}&language=${language}`;
+            const params = new URLSearchParams({
+                api_key: apiKey,
+                query: cleanTitle,
+                language: language,
+                page: 1,
+                include_adult: false
+            });
+
+            if (cleanYear) {
+                params.append('primary_release_year', cleanYear);
+            }
+
+            const url = `${this.BASE_URL}/search/movie?${params.toString()}`;
             
             const response = await fetch(url);
             

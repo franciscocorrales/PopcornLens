@@ -3,8 +3,9 @@
  * Stores API responses to reduce network calls
  */
 const Cache = {
-    PREFIX: 'popcorn_cache_',
-    DEFAULT_EXPIRY: 7 * 24 * 60 * 60 * 1000, // 1 week (milliseconds)
+    // Use constants from config
+    PREFIX: PopcornConfig.CACHE.PREFIX,
+    DEFAULT_EXPIRY: PopcornConfig.CACHE.TTL,
 
     /**
      * Generate storage key
@@ -21,8 +22,14 @@ const Cache = {
      */
     isEnabled: function() {
         return new Promise((resolve) => {
-            chrome.storage.sync.get({ cacheEnabled: true }, (items) => {
-                resolve(items.cacheEnabled);
+            const key = PopcornConfig.STORAGE.CACHE_ENABLED;
+            const defaultValue = PopcornConfig.DEFAULTS.CACHE_ENABLED;
+            
+            const query = {};
+            query[key] = defaultValue;
+
+            chrome.storage.sync.get(query, (items) => {
+                resolve(items[key]);
             });
         });
     },
@@ -68,7 +75,10 @@ const Cache = {
             data: data
         };
 
-        chrome.storage.local.set({ [key]: item }, () => {
+        const storageItem = {};
+        storageItem[key] = item;
+        
+        chrome.storage.local.set(storageItem, () => {
            // console.log(`PopcornLens: Cached "${title}"`);
         });
     },

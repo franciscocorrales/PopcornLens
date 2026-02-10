@@ -14,6 +14,13 @@ const Handlers = [
  * Finds a suitable handler for the current URL and processes movie entities.
  */
 async function initPopcornLens() {
+    // Get user configuration
+    const config = await new Promise(resolve => {
+        const query = {};
+        query[PopcornConfig.STORAGE.FONT_SIZE] = PopcornConfig.DEFAULTS.FONT_SIZE;
+        chrome.storage.sync.get(query, resolve);
+    });
+
     const currentUrl = window.location.href;
     const handler = Handlers.find(h => h.canHandle(currentUrl));
 
@@ -47,7 +54,7 @@ async function initPopcornLens() {
             const match = searchResult.results[0];
             console.log(`PopcornLens MATCH: "${movie.title}" -> "${match.title}" | Rating: ${match.vote_average}`);
             
-            injectRating(movie.element, match);
+            injectRating(movie.element, match, config[PopcornConfig.STORAGE.FONT_SIZE]);
         } else {
             console.log(`PopcornLens MISS: "${movie.title}"`);
         }
@@ -58,24 +65,28 @@ async function initPopcornLens() {
  * Injects the rating badge into the movie element
  * @param {HTMLElement} element - The movie card element
  * @param {Object} movieData - The TMDB movie data
+ * @param {string} fontSize - The font size in pixels
  */
-function injectRating(element, movieData) {
+function injectRating(element, movieData, fontSize = PopcornConfig.DEFAULTS.FONT_SIZE) {
     if (!element || !movieData) return;
 
     // Avoid duplicates
-    if (element.querySelector('.popcorn-lens-badge')) return;
+    if (element.querySelector(`.${PopcornConfig.UI.BADGE_CLASS}`)) return;
 
     // Ensure parent has positioning context
     const style = window.getComputedStyle(element);
     if (style.position === 'static') {
-        element.classList.add('popcorn-lens-relative');
+        element.classList.add(PopcornConfig.UI.RELATIVE_CLASS);
     }
 
     const badge = document.createElement('a');
-    badge.className = 'popcorn-lens-badge';
+    badge.className = PopcornConfig.UI.BADGE_CLASS;
     badge.target = '_blank';
-    badge.href = `${TMDB_API.WEBSITE_URL}/movie/${movieData.id}`;
+    badge.href = `${PopcornConfig.API.WEBSITE_URL}/movie/${movieData.id}`;
     
+    // Apply User Font Size
+    badge.style.fontSize = `${fontSize}px`;
+
     // Stop propagation to prevent clicking the movie card behind the badge
     badge.addEventListener('click', (e) => {
         e.stopPropagation();
