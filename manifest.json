@@ -29,16 +29,16 @@
         "handlers/megapeliculasrip.js",
         "content.js"
       ],
-      "css": ["styles.css"]
+      "css": ["ui/styles.css"]
 
     }
   ],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "ui/popup.html",
     "default_title": "PopcornLens"
   },
   "options_ui": {
-    "page": "options.html",
+    "page": "ui/options.html",
     "open_in_tab": false
   },
   "permissions": [
