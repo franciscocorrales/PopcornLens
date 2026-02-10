@@ -123,21 +123,11 @@ const ImdbHandler = {
     },
 
     showNotification: function(message) {
-        // Simple default notification since we don't have the Gandalf UIUtils
+        // Simple default notification using CSS class
         const div = document.createElement('div');
         div.textContent = message;
-        Object.assign(div.style, {
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            background: '#333',
-            color: '#fff',
-            padding: '10px 20px',
-            borderRadius: '5px',
-            zIndex: '10000',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-            transition: 'opacity 0.5s'
-        });
+        div.className = 'popcorn-toast';
+        
         document.body.appendChild(div);
         setTimeout(() => {
             div.style.opacity = '0';
@@ -196,7 +186,7 @@ const ImdbHandler = {
         titleElement.textContent = newTitle;
         
         // Add Copy Feature
-        titleElement.style.cursor = 'pointer';
+        titleElement.classList.add('popcorn-cursor-pointer');
         titleElement.title = 'Click to copy title';
         titleElement.onclick = (e) => {
             e.preventDefault();
