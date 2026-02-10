@@ -7,7 +7,8 @@
 const Handlers = [
     CinecalidadHandler,
     MegaMkvHandler,
-    ImdbHandler
+    ImdbHandler,
+    PelisHD4KHandler
 ];
 
 /**
