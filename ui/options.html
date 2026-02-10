@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PopcornLens Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <h1>🍿 PopcornLens Settings</h1>
+  
+  <div class="form-group">
+    <label for="apiKey">TMDB API Key</label>
+    <input type="text" id="apiKey" placeholder="Enter your TMDB API Key">
+    <div class="help-text">Get an API Key from <a href="https://www.themoviedb.org/documentation/api" target="_blank">themoviedb.org</a></div>
+  </div>
+
+  <div class="form-group">
+    <label for="language">Preferred Language</label>
+    <select id="language">
+      <option value="">Auto (Use Website Language)</option>
+      <option value="en-US">English (en-US)</option>
+      <option value="es-ES">Spanish (es-ES)</option>
+      <option value="fr-FR">French (fr-FR)</option>
+      <option value="de-DE">German (de-DE)</option>
+      <option value="it-IT">Italian (it-IT)</option>
+      <option value="pt-BR">Portuguese (pt-BR)</option>
+    </select>
+  </div>
+
+  <div class="form-group" style="margin-top: 20px;">
+    <label class="checkbox-label">
+        <input type="checkbox" id="cacheEnabled" style="width: auto;">
+        Enable Caching (Recommended)
+    </label>
+    <div class="help-text">Stores movie data for 1 week to save API calls.</div>
+  </div>
+
+  <div class="form-group">
+    <label for="fontSize">Badge Font Size</label>
+    <div class="range-container">
+        <input type="range" id="fontSize" min="10" max="50" style="flex: 1;">
+        <span id="fontSizeDisplay" style="font-weight: bold; width: 40px;"></span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button id="flushCache">Clear Cache</button>
+  </div>
+
+  <button id="save">Save Settings</button>
+  <div id="status"></div>
+
+  <script src="../utils/config.js"></script>
+  <script src="../utils/cache.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
