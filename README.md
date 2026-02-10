@@ -1,75 +1,87 @@
 # PopcornLens 🍿
 
-PopcornLens is a Chrome Extension that automatically injects movie ratings and metadata into your favorite streaming or download websites. It uses The Movie Database (TMDB) API to match movies found on the page and displays their ratings instantly.
+PopcornLens is a powerful Chrome Extension that enhances your movie browsing experience by automatically injecting ratings, metadata, and useful information into various movie streaming and database websites. Powered by The Movie Database (TMDB) API.
 
 ## 🚀 Features
 
-- **Automatic Recognition**: Scans the page for movie titles and release years using advanced text parsing to remove noise (e.g., "1080p", "WebRip").
-- **Visual Badges**: Injects a clean, non-intrusive rating badge directly onto movie cards.
-- **Smart Caching**: Caches API results for 1 week to minimize API usage and speed up loading.
-- **Configurable**: Settings page to manage your API Key, preferred language, and cache controls.
-- **Modular Design**: Easily extensible handler system to add support for new websites.
+- **Universal Rating Injection**: Scans pages for movie cards and instantly displays the TMDB rating badge (🍿 8.5).
+- **Smart Parsing**: Advanced cleaning algorithms handle messy titles (e.g., "Matrix 2021 4k 1080p HDRip") to ensure accurate matches.
+- **IMDb Enhancements**: on IMDb, it appends the Release Year to titles for easier copying and calculates Actor Ages on profile pages (including deceased status).
+- **Customizable UI**: Adjust badge font sizes directly from the settings to fit your screen.
+- **Performance First**: Built-in 7-day caching system minimizes API calls and ensures instant loading on revisited pages.
+- **Modular Architecture**: Clean, handler-based design makes it incredibly easy to add support for new sites.
 
 ## 📋 Supported Websites
 
-Currently, PopcornLens supports the following sites:
+PopcornLens currently supports the following platforms:
 
+- [**IMDb**](https://imdb.com) (`imdb.com`) - *Age calculation & Year appending*
 - [**Cinecalidad**](https://www.cinecalidad.rs) (`cinecalidad.rs`)
 - [**Mega-Mkv**](https://mega-mkv.com) (`mega-mkv.com`)
-
-*More sites can be added easily by creating new handlers.*
+- [**PelisHD4K**](https://pelishd4k.com/) (`pelishd4k.com`)
+- [**MegaPeliculasRip**](https://www.megapeliculasrip.net/) (`megapeliculasrip.net`)
 
 ## 🛠️ Installation
 
-1. Clone or download this repository.
-2. Open Chrome/Brave/Edge and go to `chrome://extensions`.
-3. Enable **Developer Mode** in the top right corner.
-4. Click **Load unpacked** and select the `PopcornLens` folder.
-5. **Configuration**:
-   - Right-click the extension icon and select **Options**.
-   - Enter your [TMDB API Key](https://www.themoviedb.org/documentation/api).
-   - Select your preferred language (or leave as Auto).
+1. **Get the Code**: Clone or download this repository.
+2. **Load in Browser**:
+   - Open Chrome (or Brave/Edge) and go to `chrome://extensions`.
+   - Enable **Developer Mode** (top right toggle).
+   - Click **Load unpacked** and select the `PopcornLens` folder.
+3. **Configure**:
+   - Click the extension icon (or right-click > Options).
+   - Enter your [TMDB API Key](https://www.themoviedb.org/documentation/api) (Required).
+   - Adjust the badge font size or preferred language.
 
-## 🏗️ Development
+## 🤝 Contributing / Requesting Sites
 
-### Project Structure
+**Want PopcornLens on your favorite site?**
+
+We love adding support for new websites! The best way to get a site added is to **submit a Pull Request**. 
+
+If you are not a developer, please open an Issue with the **URL** of the website you want supported.
+
+### How to Add a New Site (For Developers)
+
+1.  Create a new file in `handlers/` (e.g., `mysite.js`).
+2.  Implement the handler interface:
+    ```javascript
+    const MySiteHandler = {
+        name: 'MySite',
+        MATCH_URL: 'mysite.com',
+        
+        canHandle: function(url) {
+            return url.includes(this.MATCH_URL);
+        },
+    
+        getMovies: function() {
+            // Select your movie elements
+            // Use MovieParser.parse(rawText) to clean titles
+            // Return array: [{ element, title, year }]
+        }
+    };
+    ```
+3.  Register the handler in `content.js` (`Handlers` array) and `manifest.json` (`content_scripts` "js" section).
+
+## 🏗️ Project Structure
 
 ```text
 PopcornLens/
-├── manifest.json        # Extension configuration
-├── content.js           # Main logic orchestrator
-├── options.html         # Settings UI
-├── styles.css           # UI Styling
-├── utils/
-│   ├── tmdb.js          # TMDB API interaction
-│   ├── cache.js         # Local storage caching logic
-│   └── parser.js        # Title cleaning and parsing
-├── handlers/            # Site-specific logic
+├── manifest.json        # Extension config (Manifest V3)
+├── content.js           # Main logic & Handler registry
+├── options.html/js      # Settings Page
+├── handlers/            # Site-Specific Logics
+│   ├── imdb.js
 │   ├── cinecalidad.js
-│   └── megamkv.js
-└── icons/               # Extension icons
+│   ├── pelishd4k.js
+│   └── ...
+└── utils/
+    ├── config.js        # Centralized constants
+    ├── tmdb.js          # API Client
+    ├── cache.js         # LocalStorage w/ TTL
+    └── parser.js        # Title cleaner (Regex magic)
 ```
-
-### Adding a New Website
-
-To add support for a new website, create a new file in `handlers/`:
-
-```javascript
-const NewSiteHandler = {
-    name: 'NewSite',
-    MATCH_URL: 'newsite.com',
-    
-    canHandle: (url) => url.includes(NewSiteHandler.MATCH_URL),
-    
-    getMovies: () => {
-        // Use MovieParser to clean titles
-        // Return array of { element: HTMLElement, title: string, year: string }
-    }
-};
-```
-
-Then register it in `content.js` and `manifest.json`.
 
 ## ⚠️ Disclaimer
 
-This project is for educational purposes. It scrapes information from third-party websites and uses the TMDB API. Please respect the terms of service of all visited websites and APIs.
+This project is for educational purposes. It scrapes publicly available information from third-party websites and uses the TMDB API to enhance the user experience. Please respect the terms of service of all visited websites and APIs.

@@ -30,13 +30,20 @@ const MovieParser = {
     /**
      * Parses a raw text string into a clean title and year
      * @param {string} rawText 
+     * @param {Object} [options] - Optional settings
+     * @param {boolean} [options.removeBracketContents] - If true, removes all content inside [...]
      * @returns {{title: string, year: string|null}}
      */
-    parse: function(rawText) {
+    parse: function(rawText, options = {}) {
         if (!rawText) return { title: "", year: null };
 
         let cleanText = rawText;
         let year = null;
+
+        // OPTIONAL: Aggressive Cleanup for sites that use brackets for metadata
+        if (options.removeBracketContents) {
+            cleanText = cleanText.replace(/\[.*?\]/g, ' ');
+        }
 
         // STRATEGY 1: Structured Year (YYYY) or [YYYY]
         // If found, we assume everything after is metadata/garbage (e.g. "Title (2024) 1080p foo bar")

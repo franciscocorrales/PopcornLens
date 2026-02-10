@@ -14,7 +14,8 @@
         "https://www.cinecalidad.rs/*",
         "https://mega-mkv.com/*",
         "https://*.imdb.com/*",
-        "https://pelishd4k.com/*"
+        "https://pelishd4k.com/*",
+        "https://www.megapeliculasrip.net/*"
       ],
       "js": [
         "utils/config.js",
@@ -25,6 +26,7 @@
         "handlers/megamkv.js",
         "handlers/imdb.js",
         "handlers/pelishd4k.js",
+        "handlers/megapeliculasrip.js",
         "content.js"
       ],
       "css": ["styles.css"]
