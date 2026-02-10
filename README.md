@@ -69,7 +69,9 @@ If you are not a developer, please open an Issue with the **URL** of the website
 PopcornLens/
 ├── manifest.json        # Extension config (Manifest V3)
 ├── content.js           # Main logic & Handler registry
-├── options.html/js      # Settings Page
+├── ui/                  # User Interface
+│   ├── options.html/css/js # Settings Page
+│   └── popup.html/css/js   # Extension Popup
 ├── handlers/            # Site-Specific Logics
 │   ├── imdb.js
 │   ├── cinecalidad.js
