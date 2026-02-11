@@ -2,6 +2,8 @@
 
 PopcornLens is a powerful Chrome Extension that enhances your movie browsing experience by automatically injecting ratings, metadata, and useful information into various movie streaming and database websites. Powered by The Movie Database (TMDB) API.
 
+https://chromewebstore.google.com/detail/popcornlens/oeenkmomcpjkpbnfoabeihlheaiffepf
+
 ## 🚀 Features
 
 - **Universal Rating Injection**: Scans pages for movie cards and instantly displays the TMDB rating badge (🍿 8.5).
