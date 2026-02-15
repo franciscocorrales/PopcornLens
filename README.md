@@ -1,8 +1,9 @@
 # PopcornLens 🍿
 
+[Download on Chrome Web Store](https://chromewebstore.google.com/detail/popcornlens/oeenkmomcpjkpbnfoabeihlheaiffepf?hl=en&authuser=0)
+
 PopcornLens is a powerful Chrome Extension that enhances your movie browsing experience by automatically injecting ratings, metadata, and useful information into various movie streaming and database websites. Powered by The Movie Database (TMDB) API.
 
-https://chromewebstore.google.com/detail/popcornlens/oeenkmomcpjkpbnfoabeihlheaiffepf
 
 ## 🚀 Features
 
