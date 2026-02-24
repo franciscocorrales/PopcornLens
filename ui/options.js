@@ -8,12 +8,14 @@ const saveOptions = () => {
     const apiKey = document.getElementById('apiKey').value;
     const language = document.getElementById('language').value;
     const cacheEnabled = document.getElementById('cacheEnabled').checked;
+    const ratingEffects = document.getElementById('ratingEffects').checked;
     const fontSize = document.getElementById('fontSize').value;
   
     const settings = {};
     settings[PopcornConfig.STORAGE.API_KEY] = apiKey;
     settings[PopcornConfig.STORAGE.LANGUAGE] = language;
     settings[PopcornConfig.STORAGE.CACHE_ENABLED] = cacheEnabled;
+    settings[PopcornConfig.STORAGE.RATING_EFFECTS] = ratingEffects;
     settings[PopcornConfig.STORAGE.FONT_SIZE] = fontSize;
 
     chrome.storage.sync.set(settings, () => {
@@ -32,6 +34,7 @@ const saveOptions = () => {
         [PopcornConfig.STORAGE.API_KEY]: PopcornConfig.DEFAULTS.API_KEY,
         [PopcornConfig.STORAGE.LANGUAGE]: PopcornConfig.DEFAULTS.LANGUAGE,
         [PopcornConfig.STORAGE.CACHE_ENABLED]: PopcornConfig.DEFAULTS.CACHE_ENABLED,
+        [PopcornConfig.STORAGE.RATING_EFFECTS]: PopcornConfig.DEFAULTS.RATING_EFFECTS,
         [PopcornConfig.STORAGE.FONT_SIZE]: PopcornConfig.DEFAULTS.FONT_SIZE
     };
 
@@ -39,6 +42,7 @@ const saveOptions = () => {
         document.getElementById('apiKey').value = items[PopcornConfig.STORAGE.API_KEY];
         document.getElementById('language').value = items[PopcornConfig.STORAGE.LANGUAGE];
         document.getElementById('cacheEnabled').checked = items[PopcornConfig.STORAGE.CACHE_ENABLED];
+        document.getElementById('ratingEffects').checked = items[PopcornConfig.STORAGE.RATING_EFFECTS];
         
         // Font Size
         document.getElementById('fontSize').value = items[PopcornConfig.STORAGE.FONT_SIZE];

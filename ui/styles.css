@@ -54,3 +54,44 @@
     font-family: sans-serif;
     font-size: 14px;
 }
+
+/* Rating specific styles */
+.popcorn-bad {
+    background-color: #ef4444 !important; /* Red for bad movies */
+}
+
+.popcorn-good {
+    background-color: #10b981 !important; /* Emerald Green for good movies */
+}
+
+.popcorn-excellent {
+    background-color: #f59e0b !important; /* Amber/Gold for excellent movies */
+    color: #fff !important;
+}
+
+/* Animations based on score */
+@keyframes popcorn-vibe {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-1px, 1px) rotate(-1deg); }
+    50% { transform: translate(1px, -1px) rotate(1deg); }
+    75% { transform: translate(-1px, -1px) rotate(-1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes popcorn-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+.popcorn-vibe-1 {
+    animation: popcorn-vibe 2s infinite; /* Gentle vibration */
+}
+
+.popcorn-vibe-2 {
+    animation: popcorn-vibe 0.5s infinite; /* Faster vibration */
+}
+
+.popcorn-vibe-3 {
+    animation: popcorn-vibe 0.2s infinite, popcorn-pulse 2s infinite; /* Intense vibration + pulse */
+}

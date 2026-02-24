@@ -21,6 +21,7 @@ async function initPopcornLens() {
     const config = await new Promise(resolve => {
         const query = {};
         query[PopcornConfig.STORAGE.FONT_SIZE] = PopcornConfig.DEFAULTS.FONT_SIZE;
+        query[PopcornConfig.STORAGE.RATING_EFFECTS] = PopcornConfig.DEFAULTS.RATING_EFFECTS;
         chrome.storage.sync.get(query, resolve);
     });
 
@@ -68,7 +69,7 @@ async function initPopcornLens() {
             const match = searchResult.results[0];
             console.log(`PopcornLens MATCH: "${movie.title}" -> "${match.title}" | Rating: ${match.vote_average}`);
             
-            injectRating(movie.element, match, config[PopcornConfig.STORAGE.FONT_SIZE]);
+            injectRating(movie.element, match, config[PopcornConfig.STORAGE.FONT_SIZE], config[PopcornConfig.STORAGE.RATING_EFFECTS]);
         } else {
             console.log(`PopcornLens MISS: "${movie.title}"`);
         }
@@ -80,8 +81,9 @@ async function initPopcornLens() {
  * @param {HTMLElement} element - The movie card element
  * @param {Object} movieData - The TMDB movie data
  * @param {string} fontSize - The font size in pixels
+ * @param {boolean} ratingEffectsEnabled - Whether to show rating based colors and effects
  */
-function injectRating(element, movieData, fontSize = PopcornConfig.DEFAULTS.FONT_SIZE) {
+function injectRating(element, movieData, fontSize = PopcornConfig.DEFAULTS.FONT_SIZE, ratingEffectsEnabled = true) {
     if (!element || !movieData) return;
 
     // Avoid duplicates
@@ -110,6 +112,34 @@ function injectRating(element, movieData, fontSize = PopcornConfig.DEFAULTS.FONT
     const rating = movieData.vote_average ? movieData.vote_average.toFixed(1) : 'NR';
     badge.innerHTML = `<span>🍿</span> ${rating}`;
     badge.title = `${movieData.title} (${movieData.release_date?.split('-')[0] || 'Unknown'})\n${movieData.overview || ''}\n\nClick to view on TMDB`;
+
+    // Apply visual effects based on rating
+    if (ratingEffectsEnabled) {
+        const score = parseFloat(rating);
+        if (!isNaN(score)) {
+            if (score < 6.5) {
+                badge.classList.add('popcorn-bad');
+            } else if (score >= 7.0) {
+                // Good movies - Green
+                badge.classList.add('popcorn-good');
+                
+                // Animation tiers
+                if (score >= 7.0 && score < 8.0) {
+                    badge.classList.add('popcorn-vibe-1');
+                } else if (score >= 8.0) {
+                    // Excellent movies - Gold
+                    badge.classList.remove('popcorn-good');
+                    badge.classList.add('popcorn-excellent');
+                    
+                    if (score < 9.0) {
+                        badge.classList.add('popcorn-vibe-2');
+                    } else {
+                        badge.classList.add('popcorn-vibe-3');
+                    }
+                }
+            }
+        }
+    }
 
     // Append to card
     element.appendChild(badge);

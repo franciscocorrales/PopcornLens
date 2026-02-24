@@ -3,6 +3,7 @@ const PopcornConfig = {
     DEFAULTS: {
         FONT_SIZE: '12',
         CACHE_ENABLED: true,
+        RATING_EFFECTS: true,
         API_KEY: '',
         LANGUAGE: '',
         TOAST_DURATION: 2000
@@ -13,6 +14,7 @@ const PopcornConfig = {
         API_KEY: 'apiKey',
         LANGUAGE: 'language',
         CACHE_ENABLED: 'cacheEnabled',
+        RATING_EFFECTS: 'ratingEffects',
         FONT_SIZE: 'fontSize',
        // CACHE_PREFIX: 'popcorn_cache_' // Moving this to CACHE object for clarity
     },
