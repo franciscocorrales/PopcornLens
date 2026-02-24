@@ -87,6 +87,14 @@ PopcornLens/
     └── parser.js        # Title cleaner (Regex magic)
 ```
 
+## 📦 Packaging
+
+To create a release ready for the Chrome Web Store, run the following command in the project root:
+
+```bash
+zip -r PopcornLens.zip . -x "*.git*"
+```
+
 ## ⚠️ Disclaimer
 
 This project is for educational purposes. It scrapes publicly available information from third-party websites and uses the TMDB API to enhance the user experience. Please respect the terms of service of all visited websites and APIs.
