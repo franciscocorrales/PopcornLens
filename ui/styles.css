@@ -29,6 +29,12 @@
     font-size: 1.1em;
 }
 
+/* Cinecalidad.am card layout needs extra badge spacing */
+body.popcorn-cinecalidad-am article.item.movies .popcorn-lens-badge {
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
 /* For sites where the card needs relative positioning */
 .popcorn-lens-relative {
     position: relative !important;

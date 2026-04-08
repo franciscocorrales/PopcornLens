@@ -6,6 +6,7 @@
 
 const Handlers = [
     CinecalidadHandler,
+    CinecalidadAmHandler,
     MegaMkvHandler,
     ImdbHandler,
     PelisHD4KHandler,

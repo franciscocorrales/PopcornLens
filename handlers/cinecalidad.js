@@ -5,10 +5,10 @@
 const CinecalidadHandler = {
     name: 'Cinecalidad',
     MATCH_URL: 'cinecalidad.rs',
-    
+
     /**
      * Checks if this handler supports the current URL
-     * @param {string} url 
+     * @param {string} url
      * @returns {boolean}
      */
     canHandle: function(url) {

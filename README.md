@@ -20,6 +20,7 @@ PopcornLens currently supports the following platforms:
 
 - [**IMDb**](https://imdb.com) (`imdb.com`) - *Age calculation & Year appending*
 - [**Cinecalidad**](https://www.cinecalidad.rs) (`cinecalidad.rs`)
+- [**Cinecalidad AM**](https://www.cinecalidad.am) (`cinecalidad.am`)
 - [**Mega-Mkv**](https://mega-mkv.com) (`mega-mkv.com`)
 - [**PelisHD4K**](https://pelishd4k.com/) (`pelishd4k.com`)
 - [**MegaPeliculasRip**](https://www.megapeliculasrip.net/) (`megapeliculasrip.net`)
@@ -78,6 +79,7 @@ PopcornLens/
 ├── handlers/            # Site-Specific Logics
 │   ├── imdb.js
 │   ├── cinecalidad.js
+│   ├── cinecalidad_am.js
 │   ├── pelishd4k.js
 │   └── ...
 └── utils/
